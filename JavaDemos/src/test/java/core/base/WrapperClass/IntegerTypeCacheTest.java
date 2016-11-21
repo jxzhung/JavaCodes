@@ -16,7 +16,7 @@ public class IntegerTypeCacheTest {
             Integer i1 = 127, i2 = 127;
             System.out.println("i1==i2 " + (i1 == i2));
             Integer i3 = 128, i4 = 128;
-            System.out.println("i4==i4 " + (i3 == i4));
+            System.out.println("i3==i4 " + (i3 == i4));
 
             // Character 自动装箱缓存范围 0-127
             Character c1 = 127, c2 = 127;
