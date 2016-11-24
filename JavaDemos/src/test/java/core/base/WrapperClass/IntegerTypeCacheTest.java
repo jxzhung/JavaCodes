@@ -29,5 +29,10 @@ public class IntegerTypeCacheTest {
             System.out.println("l1==l2 " + (l1 == l2));
             Long l3 = 128L, l4 = 128L;
             System.out.println("l3==l4 " + (l3 == l4));
+
+            Short s1 = 100, s2 = 100;
+            System.out.println("s1==s2 " + (s1 == s2));
+            Short s3 = 200, s4 = 200;
+            System.out.println("s3==s4 " + (s3 == s4));
         }
 }
