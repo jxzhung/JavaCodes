@@ -10,7 +10,9 @@ import java.sql.*;
 import java.util.*;
 
 /**
- * Created by Jzhung on 2016/11/22.
+ * 抓取全国各版本教材课程目录信息
+ *
+ * @author jzhung
  */
 public class Main {
     public static void main(String[] args) {
@@ -32,7 +34,6 @@ public class Main {
 
         Connection conn = DbUtil.getConn();
 
-        StringBuilder sqlBuilder = new StringBuilder();
         int total = bookVersionList.size();
 
         for (int k = 335; k < total; k++) {
@@ -83,13 +84,13 @@ public class Main {
                         ps2.setString(1, nodeName);
                         ps2.setInt(2, genUnitId);
                         boolean result = ps2.execute();
-                        System.out.println("---- " + nodeName + (!result ? "成功" : "失败"));
+                        System.out.println("---- " + nodeName + (!result ? " SUCCESS" : " FAILED++++++++++++++++++++++++++"));
                     }
 
                 }
             }
         }
-
+        conn.close();
     }
 
 
