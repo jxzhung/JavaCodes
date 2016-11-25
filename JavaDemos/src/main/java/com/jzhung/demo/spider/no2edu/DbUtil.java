@@ -28,7 +28,7 @@ public class DbUtil {
     public static List<BookVersion> getAllBookVersions(){
         Connection conn = getConn();
         String sql = "SELECT gl. NAME, gl.gLevelId, s.`name`, s.subjectId, bs.`name`, bs.bSeriesId, bsv.`name`," +
-                " bsv.ed FROM `subject` AS s, grade_level AS gl, book_series AS bs, subject_book_series AS sbs," +
+                " bsv.bsvId FROM `subject` AS s, grade_level AS gl, book_series AS bs, subject_book_series AS sbs," +
                 " book_series_version AS bsv WHERE sbs.bSeriesId = bs.bSeriesId AND sbs.subjectId = s.subjectId" +
                 " AND sbs.gLevelId = gl.gLevelId AND sbs.bSeriesId = bsv.bSeriesId;";
         List<BookVersion> bookVersionList = new ArrayList<BookVersion>();

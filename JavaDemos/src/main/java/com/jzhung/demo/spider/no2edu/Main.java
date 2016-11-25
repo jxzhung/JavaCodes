@@ -18,79 +18,90 @@ public class Main {
     public static void main(String[] args) {
         //getSubjects();
         //getVersions();
-        try {
-            importUnit();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        importUnit();
     }
 
     /**
      * 导入单元数据
      */
-    private static void importUnit() throws SQLException {
+    private static void importUnit() {
         List<BookVersion> bookVersionList = DbUtil.getAllBookVersions();
         System.out.println(bookVersionList.size());
 
-        Connection conn = DbUtil.getConn();
-
+        Connection conn = null;
         int total = bookVersionList.size();
+        try {
+            conn = DbUtil.getConn();
+            for (int k = 1950; k < total; k++) {
+                BookVersion bv = bookVersionList.get(k);
+                String url = "http://s.dearedu.com/list.php?g=" + bv.getGradeLevelId() + "&su=" + bv.getSubjectId() + "&e=" + bv.getSeriesId() + "&ed=" + bv.getBookId();
+                System.out.println("处理：" + k + "/" + total + " " + url);
+                Element em = getDoc(url).getElementById("lTREEMenuDEMO");
+                //获取所有tag dd
+                Elements dds = em.getElementsByTag("dd");
+                //System.out.println(em.html());
+                for (int i = 0; i < dds.size(); i++) {
+                    Element dd = dds.get(i);
+                    Elements links = dd.select("a[href]");
 
-        for (int k = 335; k < total; k++) {
-            BookVersion bv = bookVersionList.get(k);
-            String url = "http://s.dearedu.com/list.php?g=" + bv.getGradeLevelId() + "&su=" + bv.getSubjectId() + "&e=" + bv.getSeriesId() + "&ed=" + bv.getBookId();
-            System.out.println("处理：" + k + "/" + total + " " + url);
-            Element em = getDoc(url).getElementById("lTREEMenuDEMO");
-            //获取所有tag dd
-            Elements dds = em.getElementsByTag("dd");
-            //System.out.println(em.html());
-            for (int i = 0; i < dds.size(); i++) {
-                Element dd = dds.get(i);
-                Elements links = dd.select("a[href]");
+                    int genUnitId = 0;
+                    for (int j = 0; j < links.size(); j++) {
+                        Element link = links.get(j);
+                        String nodeName = link.attr("title");
+                        //第一个节点是单元名
+                        if (j == 0) {
+                            //System.out.println(nodeName);
+                            //String unitSql = "insert into book_unit (name, bsvId, bsId, subjectId, gradeId) values (?,?,?,?,?)";
+                            String unitSql = "insert into book_unit values(NULL, ?, ?, ?, ?, ?)";
+                            //sqlBuilder.append(unitSql);
+                            //System.out.println(unitSql);
+                            PreparedStatement ps1 = null;
 
-                int genUnitId = 0;
-                for (int j = 0; j < links.size(); j++) {
-                    Element link = links.get(j);
-                    String nodeName = link.attr("title");
-                    //第一个节点是单元名
-                    if (j == 0) {
-                        //System.out.println(nodeName);
-                        //String unitSql = "insert into book_unit (name, bsvId, bsId, subjectId, gradeId) values (?,?,?,?,?)";
-                        String unitSql = "insert into book_unit values(NULL, ?, ?, ?, ?, ?)";
-                        //sqlBuilder.append(unitSql);
-                        //System.out.println(unitSql);
-                        PreparedStatement ps1 = conn.prepareStatement(unitSql, Statement.RETURN_GENERATED_KEYS);
-                        ps1.setString(1, nodeName);
-                        ps1.setInt(2, bv.getBookId());
-                        ps1.setInt(3, bv.getSeriesId());
-                        ps1.setInt(4, bv.getSubjectId());
-                        ps1.setInt(5, bv.getGradeLevelId());
-                        ps1.executeUpdate();
-                        ResultSet rs = ps1.getGeneratedKeys();
-                        while (rs.next()) {
-                            genUnitId = rs.getInt(1);
+                            ps1 = conn.prepareStatement(unitSql, Statement.RETURN_GENERATED_KEYS);
+
+                            ps1.setString(1, nodeName);
+                            ps1.setInt(2, bv.getBookId());
+                            ps1.setInt(3, bv.getSeriesId());
+                            ps1.setInt(4, bv.getSubjectId());
+                            ps1.setInt(5, bv.getGradeLevelId());
+                            ps1.executeUpdate();
+                            ResultSet rs = ps1.getGeneratedKeys();
+                            while (rs.next()) {
+                                genUnitId = rs.getInt(1);
+                            }
+                            if (genUnitId > 0) {
+                                System.out.println(nodeName + " 新建成功 ID:" + genUnitId);
+                            }
+                        } else {
+                            if (genUnitId <= 0) {
+                                throw new RuntimeException("获取不到新增单元的ID");
+                            }
+                            //System.out.println("---- " + nodeName);
+                            String unitSql = "insert into book_unit_lesson values(NULL, ?, ?)";
+                            //System.out.println(unitSql);
+                            PreparedStatement ps2 = conn.prepareStatement(unitSql);
+                            ps2.setString(1, nodeName);
+                            ps2.setInt(2, genUnitId);
+                            boolean result = ps2.execute();
+                            System.out.println("---- " + nodeName + (!result ? " SUCCESS" : " FAILED++++++++++++++++++++++++++"));
                         }
-                        if (genUnitId > 0) {
-                            System.out.println(nodeName + " 新建成功 ID:" + genUnitId);
-                        }
-                    } else {
-                        if (genUnitId <= 0) {
-                            throw new RuntimeException("获取不到新增单元的ID");
-                        }
-                        //System.out.println("---- " + nodeName);
-                        String unitSql = "insert into book_unit_lesson values(NULL, ?, ?)";
-                        //System.out.println(unitSql);
-                        PreparedStatement ps2 = conn.prepareStatement(unitSql);
-                        ps2.setString(1, nodeName);
-                        ps2.setInt(2, genUnitId);
-                        boolean result = ps2.execute();
-                        System.out.println("---- " + nodeName + (!result ? " SUCCESS" : " FAILED++++++++++++++++++++++++++"));
+
                     }
-
                 }
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
         }
-        conn.close();
     }
 
 
@@ -112,7 +123,7 @@ public class Main {
 
             for (Element vlink : versionlinks) {
                 String vurl = vlink.attr("abs:href");
-                //System.out.println(vurl);
+                System.out.println(vurl);
                 String vname = vlink.text();
                 String su = vurl.substring(vurl.indexOf("su=") + 3, vurl.indexOf("&e")); //科目
                 String g = vurl.substring(vurl.indexOf("g=") + 2, vurl.indexOf("&su")); //年级
@@ -130,7 +141,7 @@ public class Main {
                         String ed = bvburl.substring(bvburl.indexOf("ed=") + 3, bvburl.length());
                         String bvbname = bvblink.text();
                         //System.out.println(vname + " 书 " + bvbname);
-                        //System.out.printf("INSERT INTO `book_version_book` VALUES (null, %s, %s, '%s');\n", ed, e, bvbname);
+                        System.out.printf("INSERT INTO `book_version_book` VALUES (null, %s, %s, '%s');\n", ed, e, bvbname);
                     }
                 }
 
