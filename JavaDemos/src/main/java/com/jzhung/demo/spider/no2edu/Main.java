@@ -5,6 +5,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
 import java.util.*;
@@ -18,24 +21,29 @@ public class Main {
     public static void main(String[] args) {
         //getSubjects();
         //getVersions();
-        importUnit();
+       importUnit();
     }
 
     /**
      * 导入单元数据
      */
     private static void importUnit() {
-        List<BookVersion> bookVersionList = DbUtil.getAllBookVersions();
-        System.out.println(bookVersionList.size());
+        List<BookVersion> bookVersionList = DbUtil.getAllBookVersions3();
+        System.out.println("数量" + bookVersionList.size());
 
         Connection conn = null;
         int total = bookVersionList.size();
         try {
             conn = DbUtil.getConn();
-            for (int k = 1950; k < total; k++) {
+            for (int k = 0; k < total; k++) {
                 BookVersion bv = bookVersionList.get(k);
-                String url = "http://s.dearedu.com/list.php?g=" + bv.getGradeLevelId() + "&su=" + bv.getSubjectId() + "&e=" + bv.getSeriesId() + "&ed=" + bv.getBookId();
+                String url = "http://s.dearedu.com/list.php?g=" + bv.getGradeLevelId() + "&su=" + bv.getSubjectId() + "&e=" + bv.getSeriesId() + "&ed=" + bv.getBookEdId();
                 System.out.println("处理：" + k + "/" + total + " " + url);
+
+                /*if(1 == 1){
+                    continue;
+                }*/
+
                 Element em = getDoc(url).getElementById("lTREEMenuDEMO");
                 //获取所有tag dd
                 Elements dds = em.getElementsByTag("dd");
@@ -109,45 +117,69 @@ public class Main {
      * 生成课程版本和关联关系SQL语句
      */
     private static void getVersions() {
-        Element em = getDoc(Const.URL_VERSION_LINKS).select(".hide666").first();
-        Elements links = em.select("a[href]");
-        Set<String> bookVersionKeySet = new HashSet<String>();
-        //所有科目页面链接
-        for (Element link : links) {
-            String subject = link.text();
-            String slink = link.attr("abs:href");
-            //System.out.println(subject + slink);
-            //处理一个科目获取所有版本
-            Element verionNode = getDoc(slink).select(".hide555").first();
-            Elements versionlinks = verionNode.select("a[href]");
+        File logFile = new File("d:\\book_version_book.txt");
+        if (logFile.exists()) {
+            logFile.delete();
+        }
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(logFile));
 
-            for (Element vlink : versionlinks) {
-                String vurl = vlink.attr("abs:href");
-                System.out.println(vurl);
-                String vname = vlink.text();
-                String su = vurl.substring(vurl.indexOf("su=") + 3, vurl.indexOf("&e")); //科目
-                String g = vurl.substring(vurl.indexOf("g=") + 2, vurl.indexOf("&su")); //年级
-                String e = vurl.substring(vurl.indexOf("e=") + 2, vurl.length()); //版本
-                // 1 导入版本
+
+            //从高中语文开始
+            Element em = getDoc(Const.URL_VERSION_LINKS).select(".hide666").first();
+            Elements links = em.select("a[href]");
+            Set<String> bookVersionKeySet = new HashSet<String>();
+
+            //所有科目页面链接 包括高中初中小学
+            for (Element link : links) {
+                String subject = link.text();
+                String slink = link.attr("abs:href");
+                //System.out.println(subject + " 请求：" + slink);
+                //处理一个科目获取所有版本
+                Element verionNode = getDoc(slink).select(".hide555").first();
+                Elements versionlinks = verionNode.select("a[href]");
+
+
+                for (Element vlink : versionlinks) {
+                    String vurl = vlink.attr("abs:href");
+                    //System.out.println(vurl);
+                    String vname = vlink.text();
+                    String su = vurl.substring(vurl.indexOf("su=") + 3, vurl.indexOf("&e")); //科目
+                    String g = vurl.substring(vurl.indexOf("g=") + 2, vurl.indexOf("&su")); //年级
+                    String e = vurl.substring(vurl.indexOf("e=") + 2, vurl.length()); //版本
+
+                    //System.out.println("" + vlink.text());
+               /* // 1 导入版本
                 if (!bookVersionKeySet.contains(e)) {
                     bookVersionKeySet.add(e);
+                    //System.out.println("教版ID" + e);
                     //System.out.printf("INSERT INTO `book_version` VALUES (%s, '%s');\n", e, vname);
+                }*/
 
                     // 3 导入版别
                     Element bvbNode = getDoc(vurl).select(".hide444").first();
+                    System.out.println("请求：" + vurl);
                     Elements bvblinks = bvbNode.select("a[href]");
                     for (Element bvblink : bvblinks) {
                         String bvburl = bvblink.attr("abs:href");
                         String ed = bvburl.substring(bvburl.indexOf("ed=") + 3, bvburl.length());
                         String bvbname = bvblink.text();
-                        //System.out.println(vname + " 书 " + bvbname);
-                        System.out.printf("INSERT INTO `book_version_book` VALUES (null, %s, %s, '%s');\n", ed, e, bvbname);
+                        //System.out.println(vname + " 书册 " + bvbname);
+                        String bsvSql = String.format("INSERT INTO `book_series_version` VALUES (null, %s, '%s', %s, %s, %s);\n", e, bvbname, ed, su, g);
+                        System.out.printf(bsvSql);
+                        bw.write(bsvSql);
                     }
-                }
-
+                    bw.flush();
 //                // 2 导入关联关系 只能执行一遍
-//                System.out.printf("INSERT INTO `subject_book_version` VALUES (%s, %s, %s);\n", g, su, e);
+                    //System.out.printf("INSERT INTO `subject_book_version` VALUES (%s, %s, %s);\n", g, su, e);
+                }
             }
+
+            bw.flush();
+            bw.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -200,7 +232,7 @@ public class Main {
     public static Document getDoc(String url) {
         Document doc = null;
         try {
-            doc = Jsoup.connect(url).userAgent("User-Agent:Mozilla/5.0 (Windows NT 10.0; WOW64; rv:38.0) Gecko/20100101 Firefox/38.0").get();
+            doc = Jsoup.connect(url).timeout(10000).userAgent("User-Agent:Mozilla/5.0 (Windows NT 10.0; WOW64; rv:38.0) Gecko/20100101 Firefox/38.0").get();
         } catch (IOException e) {
             e.printStackTrace();
         }

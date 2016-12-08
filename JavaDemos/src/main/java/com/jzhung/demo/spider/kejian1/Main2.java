@@ -1,32 +1,18 @@
 package com.jzhung.demo.spider.kejian1;
 
-import com.jzhung.demo.core.util.RedisUtil;
-import org.apache.http.*;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.fluent.Response;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.params.ClientPNames;
-import org.apache.http.client.params.CookiePolicy;
 import org.apache.http.entity.ContentType;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import redis.clients.jedis.Jedis;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,23 +21,19 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Jzhung on 2016/11/25.
  */
-public class Main {
+public class Main2 {
     public static final String UA = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36 115Browser/7.2.2";
     public static final String BASE_URL = "http://www.1kejian.com";
-    public static final String SAVE_DIR = "E:\\data\\课件\\";
-    public static String localtionList = "localtionList";
-    public static String dowlloadedList = "dowlloadedList";
+    public static final String SAVE_DIR = "E:\\data\\课件\\2\\";
 
     private static final int WAIT_TIME = 10000;
 
     private List<String> urlList = new ArrayList<String>();
     private List<String> softIdList = new ArrayList<String>();
     private List<DownloadJob> downloadJobList = new ArrayList<DownloadJob>();
-    private Jedis redis;
 
     public static void main(String[] args) {
-        Main main = new Main();
-        main.redis = RedisUtil.getJedis();
+        Main2 main = new Main2();
 
         main.getList();
 
@@ -78,7 +60,7 @@ public class Main {
         int lessonId = 2;
         int bookId = 34;
         int page = 11;
-        int max = 36;
+        int max = 15;
 
         String url = null;
         while ((url = getNextListPage(lessonId, bookId, page, max)) != null) {
@@ -167,11 +149,7 @@ public class Main {
             //DownloadJob job = downloadJobList.get(i);
             String postUrl = "http://www.1kejian.com/edu/download.asp";
             String referer = "http://www.1kejian.com/edu/softdown.asp?softid=" + job.softId;
-            Response downPageResp = Request.Post(postUrl)
-                    .bodyString(job.downQuery, ContentType.APPLICATION_FORM_URLENCODED)
-                    .addHeader("Referer", referer)
-                    .userAgent(UA)
-                    .execute();
+            Response downPageResp = Request.Post(postUrl).removeHeaders("Cookie").bodyString(job.downQuery, ContentType.APPLICATION_FORM_URLENCODED).addHeader("Referer", referer).userAgent(UA).execute();
             HttpResponse httpResponse = downPageResp.returnResponse();
             Header head = httpResponse.getFirstHeader("Location");
             System.out.println("获取重定向文件:" + job.downQuery);
@@ -179,7 +157,7 @@ public class Main {
             if (head == null) {
                 if(job.retry <=3 ){
                     System.out.println("无Location，10秒后重试");
-                    TimeUnit.MILLISECONDS.sleep(10000);
+                    TimeUnit.MILLISECONDS.sleep(50);
                     job.retry = job.retry + 1;
                     downloadFile(job);
                     return;
@@ -190,26 +168,17 @@ public class Main {
                 }
             }
             long start = System.currentTimeMillis();
-            String path = head.getValue();
-            if(!path.startsWith("/edu/UploadFile")){
-                System.out.println("地址不对：" + path);
-                return;
-            }
-            String location = BASE_URL + path;
-
-            //redis.lpush(localtionList, location);
-            //System.out.println("列表长度" + redis.llen(localtionList));
+            String location = BASE_URL + head.getValue();
 
             System.out.println("下载" + location + " 到：" + saveFile.getAbsolutePath());
-
             Response response = Request.Get(location).userAgent(UA).execute();
             response.saveContent(saveFile);
 
-            long waitTime = WAIT_TIME - (System.currentTimeMillis() - start);
+            /*long waitTime = WAIT_TIME - (System.currentTimeMillis() - start);
             if (waitTime > 0) {
                 System.out.println("等待:" + waitTime);
                 TimeUnit.MILLISECONDS.sleep(waitTime);
-            }
+            }*/
 
             /*HttpResponse fileResp = response.returnResponse();
             HttpEntity entity = fileResp.getEntity();
@@ -230,7 +199,5 @@ public class Main {
             e.printStackTrace();
         }
     }
-
-
 }
 

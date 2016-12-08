@@ -12,6 +12,15 @@ public class BookVersion {
     private int seriesId;
     private String bookName;
     private int bookId;
+    private int bookEdId;
+
+    public int getBookEdId() {
+        return bookEdId;
+    }
+
+    public void setBookEdId(int bookEdId) {
+        this.bookEdId = bookEdId;
+    }
 
     public String getGradeLevelName() {
         return gradeLevelName;
