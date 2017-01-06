@@ -27,41 +27,77 @@ public class MulticastServer extends Thread {
 
     public void run() {
         File imgFile = new File("E:\\data\\screen", "1482741540817.jpg");
-
-        while (true) {
-            try {
+        try {
+            FileInputStream fin = new FileInputStream(imgFile);
+            byte[] fileByte = inputStreamToByteArray(fin);
+            System.out.println("文件长度" + fileByte.length);
+            while (true) {
                 DatagramPacket packet = null;
-                for (String msg : message)//循环发送每条广播信息
-                {
-                    /*byte buff[] = msg.getBytes();
-                    packet = new DatagramPacket(buff, buff.length, group, port);
-                    System.out.println(new String(buff));
-                    mutiSocket.send(packet);*/
-                    byte[] data = new byte[1024];
-                    data[0] = 1;
-                    byte[] fileLen = "固定大小文件名".getBytes();
-                    System.arraycopy(fileLen, 0, data, 2, fileLen.length);
+                byte[] data = new byte[1024];
+                byte[] fileLen = intToBytes(fileByte.length);
 
-                    byte[] screenBytes = getScreen();
+                // 数据总长 4 序号 2 数据长度 3
+                System.arraycopy(fileLen, 0, data, 0, fileLen.length);
 
-
-                    System.arraycopy(screenBytes, 0, data, 1 + fileLen.length, (data.length - (1 + fileLen.length)));
+                int i = 0;
+                while (i < data.length){
+                    //System.arraycopy(fileByte, 0, data, 4, fileByte.length);
 
                     packet = new DatagramPacket(data, data.length, group, port);
                     mutiSocket.send(packet);
-
-
-
-
-                    screenBytes = ("图片长度：" + screenBytes.length).getBytes();
-                    packet = new DatagramPacket(screenBytes, screenBytes.length, group, port);
-                    mutiSocket.send(packet);
-                    sleep(2000);
                 }
-            } catch (Exception e) {
-                System.out.println("Error:" + e);
+
+                byte[] screenBytes = getScreen();
+
+
+                System.arraycopy(screenBytes, 0, data, 1 + fileLen.length, (data.length - (1 + fileLen.length)));
+
+                packet = new DatagramPacket(data, data.length, group, port);
+                mutiSocket.send(packet);
+
+
+                screenBytes = ("图片长度：" + screenBytes.length).getBytes();
+                packet = new DatagramPacket(screenBytes, screenBytes.length, group, port);
+                mutiSocket.send(packet);
+                sleep(2000);
             }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+
+    }
+
+    public static byte[] intToBytes(int value) {
+        byte[] byte_src = new byte[4];
+        byte_src[3] = (byte) ((value & 0xFF000000) >> 24);
+        byte_src[2] = (byte) ((value & 0x00FF0000) >> 16);
+        byte_src[1] = (byte) ((value & 0x0000FF00) >> 8);
+        byte_src[0] = (byte) ((value & 0x000000FF));
+        return byte_src;
+    }
+
+    public static int bytesToInt(byte[] ary, int offset) {
+        int value;
+        value = (int) ((ary[offset] & 0xFF)
+                | ((ary[offset + 1] << 8) & 0xFF00)
+                | ((ary[offset + 2] << 16) & 0xFF0000)
+                | ((ary[offset + 3] << 24) & 0xFF000000));
+        return value;
+    }
+
+    public static byte[] inputStreamToByteArray(InputStream input) throws IOException {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        byte[] buffer = new byte[4096];
+        int n = 0;
+        while (-1 != (n = input.read(buffer))) {
+            output.write(buffer, 0, n);
+        }
+        return output.toByteArray();
     }
 
 

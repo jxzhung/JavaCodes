@@ -46,7 +46,7 @@ public class HttpClientApiTest {
     @Test
     public void testGetPhoneNum() throws IOException {
         Gson gson = new Gson();
-        for (int i = 1; i < 45; i++) {
+        for (int i = 1; i < 26; i++) {
             String url = "http://www.189.cn/sales/basedata/combonumber.do?" +
                     "systemType=1&salesProdId=000000003D655A34435B3DB7E053AA1410AC8503&shopId=10001" +
                     "&comboDetailsId=&channelId=&pageindex=" + i + "&pagesize=8&areacode=8110100" +

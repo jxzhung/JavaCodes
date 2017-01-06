@@ -1,6 +1,5 @@
 package core.http.httpclient;
 
-import com.jzhung.demo.core.MainDemo;
 import org.apache.http.client.fluent.Request;
 import org.junit.Test;
 
@@ -10,6 +9,8 @@ import java.io.IOException;
  * HttpClient Fluent Api测试
  */
 public class HttpClientFluentApiTest {
+    String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36 115Browser/7.2.2";
+
     @Test
     public void get() throws IOException {
         String url = "http://www.csdn.net";
@@ -17,7 +18,7 @@ public class HttpClientFluentApiTest {
         System.out.println(content);
     }
 
-    public void post(){
+    public void post() {
 
     }
 }
