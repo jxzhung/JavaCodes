@@ -59,7 +59,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>6.0.5</version>
+            <version>5.0.4</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
@@ -102,6 +102,24 @@
             <artifactId>rxjava</artifactId>
             <version>1.2.2</version>
         </dependency>
+
+        <!-- hadoop dependency start -->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-client</artifactId>
+            <version>2.7.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-hdfs</artifactId>
+            <version>2.7.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <version>2.7.1</version>
+        </dependency>
+        <!-- hadoop dependency end -->
 
     </dependencies>
 </project>
