@@ -3,7 +3,9 @@ package com.jzhung.demo.core.hadoop;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.*;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -21,20 +23,53 @@ public class HFS {
         //pullFile("hdfs://192.168.1.210:9000/jdk/jdk-8u111-linux-x64.rpm", "d:/jdk.rpm");
         HFS.initFs();
 
+        //testGetInputStream();
+
         System.out.println("断网后回车：");
-        Scanner input = new Scanner(System.in);
-        input.nextLine();
+        HFS.pushFile("D:\\1.pptx", "/file/1.pptx");
 
-        //mkdir("/jzhung2");
 
-        for (int i = 0; i < 1000; i++) {
+        //mkdir("/file");
+
+        for (int i = 0; i < 0; i++) {
 //            HFS.pushFile("E:\\cn.wps.moffice_eng_166-v9.9.3.apk", "/jzhung/cn.wps.moffice_eng_166-v9.9.3_" + System.currentTimeMillis() + ".apk");
 //            HFS.pushFile("E:\\ATQJwendaoweike.apk", "/jzhung/ATQJwendaoweike_" + System.currentTimeMillis() + ".apk");
 //            HFS.pushFile("E:\\com.example.launcher3-v1.10.9-c64.apk", "/jzhung/com.example.launcher3-v1.10.9-c64_" + System.currentTimeMillis() + ".apk");
-            HFS.pushFile("D:\\ceshi\\hadoop\\jzhung.png", "/jzhung2/icon_" + i + "_" + System.currentTimeMillis() + ".png");
+            HFS.pushFile("D:\\ceshi\\hadoop\\jzhung.png", "/file/icon_" + i + "_" + System.currentTimeMillis() + ".png");
             System.out.println("发送：");
-            input.nextLine();
         }
+    }
+
+    private static void testGetInputStream() {
+        String file = "/jzhung2/icon_0_1484288327344.png";
+        try {
+            InputStream in = getFileInputStream(file);
+            byte[] buffer = new byte[1024];
+            int read = 0;
+            FileOutputStream fout = new FileOutputStream("D:\\1.png");
+            while ((read = in.read(buffer)) != -1){
+                fout.write(buffer, 0, read);
+            }
+            fout.flush();
+            fout.close();
+            in.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 获取文件输入流
+     *
+     * @param filePath
+     * @return
+     * @throws IOException
+     */
+    public static InputStream getFileInputStream(String filePath) throws IOException {
+        Path path = new Path(filePath);
+        FSDataInputStream open = fs.open(path, 4096);
+        return open.getWrappedStream();
     }
 
     public static void initFs() throws URISyntaxException, IOException, InterruptedException {
@@ -46,10 +81,8 @@ public class HFS {
         conf.addResource(new Path("D:/ceshi/hadoop/hdfs-site.xml"));
         long end = System.currentTimeMillis() - start;
         System.out.println("init complete time:" + end);
-        System.out.println("回车初始化FileSystem");
-        Scanner input = new Scanner(System.in);
-        input.nextLine();
         fs = FileSystem.get(new URI("hdfs://192.168.1.210:9000"), conf, "admin");
+        //fs = FileSystem.get(new URI("hdfs://192.168.1.178:9000"), conf, "root");
     }
 
     //创建新文件
