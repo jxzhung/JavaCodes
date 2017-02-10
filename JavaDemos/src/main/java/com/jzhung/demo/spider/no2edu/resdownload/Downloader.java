@@ -2,26 +2,14 @@ package com.jzhung.demo.spider.no2edu.resdownload;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
-import org.apache.http.client.fluent.Response;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.junit.Test;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URLEncoder;
 
 /**
@@ -29,7 +17,7 @@ import java.net.URLEncoder;
  */
 public class Downloader {
     String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36 115Browser/7.2.2";
-    String cookie = "mem[rank]=70; mem[exptime]=30; mem[userid]=wangtao5566; __jsluid=68f303b219642134aaa220afd53195c3; DedeUserID=2747185; DedeUserID__ckMd5=859c06162e7ad9f5; DedeLoginTime=1486456690; DedeLoginTime__ckMd5=61ea812700f040e7; UCenter_uid=2720858; UCenter_username=wangtao5566; Example_auth=9b64KEUNqAKIXZzl6YTtQMzo0veGKVdv%2FBQSMq6IJcxCbtAJo5bLsjW8fx27TpNk; PHPSESSID=qnt9mtlm7jd91r56r87ge8n9j3";
+    String cookie = "__jsluid=68f303b219642134aaa220afd53195c3; DedeUserID=2747185; DedeUserID__ckMd5=859c06162e7ad9f5; DedeLoginTime=1486527831; DedeLoginTime__ckMd5=2f05b328d6ba76d0; UCenter_uid=2720858; UCenter_username=wangtao5566; Example_auth=9b64KEUNqAKIXZzl6YTtQMzo0veGKVdv%2FBQSMq6IJcxCbtAJo5bLsjW8fx27TpNk; CNZZDATA5677110=cnzz_eid%3D434125534-1486456425-http%253A%252F%252Fclub.dearedu.com%252F%26ntime%3D1486515358";
 
     public static void main(String[] args) {
         Downloader downloader = new Downloader();
@@ -39,7 +27,6 @@ public class Downloader {
         unit.url = "http://s.dearedu.com/list.php?";
         downloader.downFile(url, destFile);
     }
-
 
 
     public void downFile(String url, String destFile) {
@@ -94,8 +81,26 @@ public class Downloader {
             Request.Get(redirectUrl2)
                     .addHeader("User-Agent", userAgent)
                     .addHeader("Cookie", cookie)
-                    .addHeader("User-Agent", userAgent)
                     .execute().saveContent(readDestFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void downFileRirectly(String url, String destFile) {
+        System.out.println("下载视频：" + url);
+        File readDestFile = new File(destFile);
+        if (readDestFile.exists()) {
+            System.out.println("文件已存在 " + destFile);
+            return;
+        }
+        try {
+            Request.Get(url)
+                    .addHeader("User-Agent", userAgent)
+                    .addHeader("Cookie", cookie)
+                    .addHeader("User-Agent", userAgent)
+                    .execute().saveContent(new File(destFile));
+            System.out.println("下载完毕 存储位置：" + destFile);
         } catch (Exception e) {
             e.printStackTrace();
         }

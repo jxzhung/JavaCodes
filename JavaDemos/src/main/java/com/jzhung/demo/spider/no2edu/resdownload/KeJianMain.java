@@ -15,32 +15,32 @@ import java.util.concurrent.Executors;
  *
  * @author jzhung
  */
-public class Main {
+public class KeJianMain {
     private List<Unit> unitList = new ArrayList<Unit>();
-    ;//单元列表
+    //单元列表
     private List<ResFile> resList = new ArrayList<ResFile>();//文件列表
     private String baseDir;
-    private int index = 0;//位置索引
+    private int index = 1600;//位置索引
     private String logFile;
 
     public static void main(String[] args) {
         //getSubjects();
         //getVersions();
-        Main task = new Main();
+        KeJianMain task = new KeJianMain();
 
-        String url = "http://s.dearedu.com/list.php?g=1&su=9&e=15&ed=250";
-        task.baseDir = "E:\\资源库\\";
+        String url = "http://s.dearedu.com/list.php?g=1&su=6&e=76&ed=175";
+        task.baseDir = "Z:\\公司资源（添加修改请联系郭工、李工）\\教学资源存档\\";
 
-        long start = System.currentTimeMillis();
+       /* long start = System.currentTimeMillis();
         task.downbookRes(url);
         task.downUnitRes();
         long end = System.currentTimeMillis() - start;
-        System.out.println("获取下载地址耗时：" + end / 1000);
+        System.out.println("获取下载地址耗时：" + end / 1000);*/
 
-
+        task.logFile = "Z:\\公司资源（添加修改请联系郭工、李工）\\教学资源存档\\log_高中-化学-新人教版-有机化学基础-.txt";
         task.loadDownloadLinkFromFile();
-        task.downResFile();
-//        task.downResFile1Thread();
+        // task.downResFile();
+        task.downResFile1Thread();
     }
 
 
@@ -79,10 +79,10 @@ public class Main {
         final int total = resList.size();
         for (int i = index; i < total; i++) {
             ResFile resFile = resList.get(i);
-            System.out.println("下载文件:" + i + "/" + total + " " + resFile.url);
+            System.out.println("下载文件:" + (i + 1) + "/" + total + " " + resFile.url);
             downloader.downFile(resFile.url, resFile.destFile);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -94,7 +94,7 @@ public class Main {
             return null;
         }
         ResFile resFile = resList.get(index);
-        System.out.println(Thread.currentThread().getName() + "下载文件:" + index + "/" + resList.size() + " " + resFile.url);
+        System.out.println(Thread.currentThread().getName() + "下载文件:" + (index + 1) + "/" + resList.size() + " " + resFile.url);
         index++;
         return resFile;
     }
@@ -108,7 +108,7 @@ public class Main {
             int totalUnit = unitList.size();
             for (int i = 0; i < unitList.size(); i++) {
                 Unit unit = unitList.get(i);
-                System.out.println("处理单元 " + unit.url + " " + i + "/" + totalUnit);
+                System.out.println("处理单元 " + unit.url + " " + (i + 1) + "/" + totalUnit);
                 // 载入第一页
                 Document doc = getDoc(unit.url);
                 Element pageDiv = doc.select(".p_page").first();
@@ -122,7 +122,7 @@ public class Main {
                 //分页爬取
                 int totalPage = unit.tatalPage;
                 for (int page = 1; page <= unit.tatalPage; page++) {
-                    System.out.println("处理单元 " + i + "/" + totalUnit + " 页面 " + page + "/" + totalPage);
+                    System.out.println("处理单元 " + (i + 1) + "/" + totalUnit + " 页面 " + page + "/" + totalPage);
                     Document pageDoc = getDoc(unit.url + "&p=" + page);
                     Element listDiv = pageDoc.select(".lb_grey").first();
 
@@ -163,7 +163,7 @@ public class Main {
     }
 
     /**
-     * 下载资源
+     * 获取单元
      */
     private void downbookRes(String url) {
         System.out.println("处理：" + url);
@@ -180,7 +180,7 @@ public class Main {
             dirBuilder.append("\\");
         }
         String dir = dirBuilder.toString();
-        logFile = baseDir + "\\log_" + dir.replace("\\", "") + ".txt";
+        logFile = baseDir + "\\log_" + dir.replace("\\", "-") + ".txt";
         baseDir = baseDir + dirBuilder.toString();
         System.out.println("教材目录：" + baseDir);
 
