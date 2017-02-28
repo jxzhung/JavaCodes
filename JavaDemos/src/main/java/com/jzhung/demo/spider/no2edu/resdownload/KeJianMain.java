@@ -20,7 +20,7 @@ public class KeJianMain {
     //单元列表
     private List<ResFile> resList = new ArrayList<ResFile>();//文件列表
     private String baseDir;
-    private int index = 1600;//位置索引
+    private int index = 437;//位置索引
     private String logFile;
 
     public static void main(String[] args) {
@@ -28,7 +28,7 @@ public class KeJianMain {
         //getVersions();
         KeJianMain task = new KeJianMain();
 
-        String url = "http://s.dearedu.com/list.php?g=1&su=6&e=76&ed=175";
+        String url = "http://s.dearedu.com/list.php?g=1&su=3&e=77&ed=116";
         task.baseDir = "Z:\\公司资源（添加修改请联系郭工、李工）\\教学资源存档\\";
 
        /* long start = System.currentTimeMillis();
@@ -37,7 +37,7 @@ public class KeJianMain {
         long end = System.currentTimeMillis() - start;
         System.out.println("获取下载地址耗时：" + end / 1000);*/
 
-        task.logFile = "Z:\\公司资源（添加修改请联系郭工、李工）\\教学资源存档\\log_高中-化学-新人教版-有机化学基础-.txt";
+        task.logFile = "Z:\\公司资源（添加修改请联系郭工、李工）\\教学资源存档\\log_高中-英语-外研版-必修2-.txt";
         task.loadDownloadLinkFromFile();
         // task.downResFile();
         task.downResFile1Thread();

@@ -17,7 +17,7 @@ import java.net.URLEncoder;
  */
 public class Downloader {
     String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36 115Browser/7.2.2";
-    String cookie = "__jsluid=68f303b219642134aaa220afd53195c3; DedeUserID=2747185; DedeUserID__ckMd5=859c06162e7ad9f5; DedeLoginTime=1486527831; DedeLoginTime__ckMd5=2f05b328d6ba76d0; UCenter_uid=2720858; UCenter_username=wangtao5566; Example_auth=9b64KEUNqAKIXZzl6YTtQMzo0veGKVdv%2FBQSMq6IJcxCbtAJo5bLsjW8fx27TpNk; CNZZDATA5677110=cnzz_eid%3D434125534-1486456425-http%253A%252F%252Fclub.dearedu.com%252F%26ntime%3D1486515358";
+    String cookie = "cookie";//todo 替换为登陆后的Cookie
 
     public static void main(String[] args) {
         Downloader downloader = new Downloader();
