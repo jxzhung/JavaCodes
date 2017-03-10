@@ -120,6 +120,12 @@
             <version>2.7.1</version>
         </dependency>
         <!-- hadoop dependency end -->
+        <!-- https://mvnrepository.com/artifact/org.alfresco/alfresco-jlan-embed -->
+        <!--<dependency>
+            <groupId>org.alfresco</groupId>
+            <artifactId>alfresco-jlan-embed</artifactId>
+            <version>6.2</version>
+        </dependency>-->
 
     </dependencies>
 </project>
