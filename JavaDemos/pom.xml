@@ -59,7 +59,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>6.0.5</version>
+            <version>5.0.4</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
@@ -102,6 +102,36 @@
             <artifactId>rxjava</artifactId>
             <version>1.2.2</version>
         </dependency>
+
+        <!-- hadoop dependency start -->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-client</artifactId>
+            <version>2.7.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-hdfs</artifactId>
+            <version>2.7.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <version>2.7.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>3.3.1</version>
+        </dependency>
+        <!-- hadoop dependency end -->
+        <!-- https://mvnrepository.com/artifact/org.alfresco/alfresco-jlan-embed -->
+        <!--<dependency>
+            <groupId>org.alfresco</groupId>
+            <artifactId>alfresco-jlan-embed</artifactId>
+            <version>6.2</version>
+        </dependency>-->
 
     </dependencies>
 </project>

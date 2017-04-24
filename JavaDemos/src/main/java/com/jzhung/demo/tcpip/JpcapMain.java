@@ -38,7 +38,7 @@ public class JpcapMain {
                 System.out.println(device.description);
             }
 
-            NetworkInterface targetInterface = devices[3];//本地连接的网卡
+            NetworkInterface targetInterface = devices[2];//本地连接的网卡
             JpcapCaptor captor = JpcapCaptor.openDevice(targetInterface, 65535, false, 20); //
             //captor.setFilter("host 122.141.231.18", true);//filter packets from ip
             //Receiver receiver = new Receiver(captor.getPacket());//just get one packet
