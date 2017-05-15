@@ -17,7 +17,7 @@ import java.net.URLEncoder;
  */
 public class Downloader {
     String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36 115Browser/7.2.2";
-    String cookie = "cookie";//todo 替换为登陆后的Cookie
+    String cookie = "__jsluid=6729719a7ea58e95ae993b9e407aed04; UM_distinctid=15ba8db71ccdb0-06bde5956139ef-4e47052e-232800-15ba8db71cdce0; DedeUserID=8898237; DedeUserID__ckMd5=4c33247920b82842; OkHW_2132_saltkey=GxzLBvJX; OkHW_2132_lastvisit=1493872058; OkHW_2132_sid=RaR6r6; OkHW_2132_lastact=1493875658%09uc.php%09; OkHW_2132_auth=ddceVMlwU9M79xzNB7NBbDfCS8priFw1G%2FpYi52pGMdQqV%2F2dkbZrJPLUa6hId6PsBOwhMTHeajMPIw3yF%2Bl2qh%2Fg7Lt; UCenter_uid=2734227; UCenter_username=suntao0468; Example_auth=9e08ei%2BNlOD6aTbWse8xH%2B2KH2Xl44GM5AVdoObBhjH7yCJR8MuWb9zbE3ALoFI; CNZZDATA5677110=cnzz_eid%3D651568479-1493185932-http%253A%252F%252Fclub.dearedu.com%252F%26ntime%3D1493872425; CNZZDATA1257122261=1075150133-1493876112-http%253A%252F%252Fwww.dearedu.com%252F%7C1493876112; DedeLoginTime=1493883056; DedeLoginTime__ckMd5=36bc46ebb2d17e05";//todo 替换为登陆后的Cookie
 
     public static void main(String[] args) {
         Downloader downloader = new Downloader();

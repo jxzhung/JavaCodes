@@ -9,10 +9,11 @@ import java.io.IOException;
  * Created by Jzhung on 2017/2/8.
  */
 public class DocumentUtil {
+    static String ua = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75";
     public static Document getDoc(String url) {
         Document doc = null;
         try {
-            doc = Jsoup.connect(url).timeout(10000).userAgent("User-Agent:Mozilla/5.0 (Windows NT 10.0; WOW64; rv:38.0) Gecko/20100101 Firefox/38.0").get();
+            doc = Jsoup.connect(url).timeout(10000).userAgent(ua).get();
         } catch (IOException e) {
             e.printStackTrace();
         }

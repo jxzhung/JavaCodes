@@ -125,6 +125,27 @@
             <artifactId>selenium-java</artifactId>
             <version>3.3.1</version>
         </dependency>
+
+
+        <dependency>
+            <groupId>us.codecraft</groupId>
+            <artifactId>webmagic-core</artifactId>
+            <version>0.6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>us.codecraft</groupId>
+            <artifactId>webmagic-extension</artifactId>
+            <version>0.6.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/cn.wanghaomiao/JsoupXpath -->
+        <dependency>
+            <groupId>cn.wanghaomiao</groupId>
+            <artifactId>JsoupXpath</artifactId>
+            <version>0.3.2</version>
+        </dependency>
+
+
         <!-- hadoop dependency end -->
         <!-- https://mvnrepository.com/artifact/org.alfresco/alfresco-jlan-embed -->
         <!--<dependency>

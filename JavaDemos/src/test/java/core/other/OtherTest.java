@@ -2,6 +2,9 @@ package core.other;
 
 import org.junit.Test;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by Jzhung on 2016/12/22.
  */
@@ -40,5 +43,18 @@ public class OtherTest {
             rstr = rstr + u[Integer.parseInt(str[i] + "")];
         }
         return rstr;
+    }
+
+    @Test
+    public void testParse(){
+        String html = "html:\"[{\\\"optionHtml\\\":\\\"A、多于4个\\\"},{\\\"optionHtml\\\":\\\"B、4个\\\"},{\\\"optionHtml\\\":\\\"C、3个\\\"},{\\\"optionHtml\\\":\\\"D、2个\\\"}]\"";
+
+        html = html.replace("\"", "").replace("\\optionHtml\\:\\", "").replace("html:[", "").replace("]", "").replace("\\},", "}").replace("\\}", "}");
+        String regex ="\\{(.*?)}";
+        Pattern p = Pattern.compile(regex);
+        Matcher matcher = p.matcher(html);
+        while (matcher.find()){
+            System.out.println(matcher.group(1));
+        }
     }
 }
