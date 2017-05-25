@@ -1,8 +1,8 @@
-package com.t600.biz;
+package com.t600.biz.entity;
 
 import java.util.List;
 
-/**
+/** 高德查询地址API响应
  * Created by Jzhung on 2017/5/18.
  */
 public class KeySearchResponse {
