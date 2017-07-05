@@ -26,8 +26,8 @@ public class PeiXunBan {
     @Test
     public void getInfos() throws Exception {
         //getContraceInfo("北京 高考培训");
-        String saveFile = "E:\\北京艺考培训班-有电话.txt";
-        getInfoFromBaiduMap(saveFile, "北京艺考培训班");
+        String saveFile = "E:\\北京艺术学校-有电话.txt";
+        getInfoFromBaiduMap(saveFile, "北京艺术学校");
     }
 
     /**
@@ -48,7 +48,7 @@ public class PeiXunBan {
         String url = String.format(BAIDU_ADDRESS_URL, encodeName, pn, nn);
         System.out.println(url);
         String text = Request.Get(url)
-                .addHeader("Cookie", "guid=03b7-6738-a90c-9fa9; UM_distinctid=15c1a5ab04f4d6-0036544f63d241-5c4f231c-232800-15c1a5ab05075a; _uab_collina=149509077111554489930572; l=AmxsuXQfLWoxqjsDPWPxGdy1vECfJBDP; cna=oplvEFevvFACATtslFzbvgl9; isg=AuDgX20XrWL_QhE6TLWLH0ZQse5yQcVrCc1TSVrz0fuOVYN_AfvAQ54lmcqv; key=bfe31f4e0fb231d29e1d3ce951e2c780; CNZZDATA1255626299=961191930-1495088309-http%253A%252F%252Fwww.amap.com%252F%7C1497487412")
+                .addHeader("Cookie", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36 115Browser/7.2.2")
                 .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36")
                 .addHeader("Referer", "http://ditu.amap.com/search?")
                 .execute().returnContent().asString();

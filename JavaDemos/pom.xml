@@ -153,6 +153,49 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.codeartisans.thirdparties.swing/batik-all -->
+        <dependency>
+            <groupId>org.codeartisans.thirdparties.swing</groupId>
+            <artifactId>batik-all</artifactId>
+            <version>1.8pre-r1084380</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/batik/batik-parser -->
+        <dependency>
+            <groupId>batik</groupId>
+            <artifactId>batik-parser</artifactId>
+            <version>1.6</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/net.arnx/wmf2svg -->
+        <dependency>
+            <groupId>net.arnx</groupId>
+            <artifactId>wmf2svg</artifactId>
+            <version>0.9.8</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.freehep/freehep-graphicsio-emf -->
+        <dependency>
+            <groupId>org.freehep</groupId>
+            <artifactId>freehep-graphicsio-emf</artifactId>
+            <version>2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.freehep</groupId>
+            <artifactId>freehep-graphicsio-svg</artifactId>
+            <version>2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.freehep</groupId>
+            <artifactId>freehep-io</artifactId>
+            <version>2.0.5</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/org.docx4j/docx4j -->
+        <dependency>
+            <groupId>org.docx4j</groupId>
+            <artifactId>docx4j</artifactId>
+            <version>3.3.4</version>
+        </dependency>
+
 
         <!-- hadoop dependency end -->
         <!-- https://mvnrepository.com/artifact/org.alfresco/alfresco-jlan-embed -->
