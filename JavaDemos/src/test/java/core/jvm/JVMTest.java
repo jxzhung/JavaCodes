@@ -2,6 +2,7 @@ package core.jvm;
 
 import org.junit.Test;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,18 @@ public class JVMTest {
 
         long time2 = System.currentTimeMillis() - t3;
         System.out.println(time2);
+
+    }
+
+    @Test
+    public void testGetType() throws ClassNotFoundException {
+        Class clazz =  Class.forName("[I");
+        System.out.println(clazz.getName());
+        clazz =  Class.forName("[[[[Ljava.lang.String;");
+        System.out.println(clazz.getName());
+
+        Class eClass = Object.class;
+        Class<?> aClass = Array.newInstance(eClass, 1).getClass();
 
     }
 }

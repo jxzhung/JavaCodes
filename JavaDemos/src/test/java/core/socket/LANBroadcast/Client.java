@@ -26,15 +26,8 @@ public class Client {
             System.out.println("监听广播端口打开：");
             while (true) {
                 ds.receive(dp);
-                int i;
-                for (i = 0; i < 1024; i++) {
-                    if (buf[i] == 0) {
-                        break;
-                    }
-                    sbuf.append((char) buf[i]);
-                }
-                System.out.println("收到广播消息：" + sbuf.toString());
-                sbuf.delete(0, sbuf.length());
+                String data = new String(dp.getData(), 0, dp.getLength(), "UTF-8");
+                System.out.println("收到" + dp.getSocketAddress() + "的广播消息：" + data);
             }
 
         } catch (SocketException e) {

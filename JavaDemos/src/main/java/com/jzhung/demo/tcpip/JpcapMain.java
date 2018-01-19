@@ -1,5 +1,6 @@
 package com.jzhung.demo.tcpip;
 
+/*
 import jpcap.JpcapCaptor;
 import jpcap.NetworkInterface;
 import jpcap.PacketReceiver;
@@ -7,10 +8,12 @@ import jpcap.packet.EthernetPacket;
 import jpcap.packet.Packet;
 import jpcap.packet.TCPPacket;
 
+*/
 /**
  * 抓取本机HTTP数据
  * Created by Jzhung on 2017/1/6.
- */
+ *//*
+
 public class JpcapMain {
     private static final int TYPE_REQUEST_GET = 1;
     private static final int TYPE_REQUEST_PSOT = 2;
@@ -51,9 +54,11 @@ public class JpcapMain {
     }
 
 
-    /**
+    */
+/**
      * 自定义包处理器
-     */
+     *//*
+
     class Receiver implements PacketReceiver {
         public void receivePacket(Packet packet) {
             if (packet instanceof TCPPacket) {// 仅捕获TCP包
@@ -82,12 +87,14 @@ public class JpcapMain {
         }
     }
 
-    /**
+    */
+/**
      * 对比数据头判断数据包类型
      *
      * @param bytes
      * @return
-     */
+     *//*
+
     public int getDataType(byte[] bytes) {
         int type = 0;//未比对
         for (int i = 0; i < getByte.length; i++) {
@@ -128,3 +135,4 @@ public class JpcapMain {
         return TYPE_UNKNOW;
     }
 }
+*/

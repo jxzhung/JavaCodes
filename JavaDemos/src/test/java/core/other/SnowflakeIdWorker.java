@@ -173,11 +173,14 @@ public class SnowflakeIdWorker {
      * 测试
      */
     public static void main(String[] args) {
-        SnowflakeIdWorker idWorker = new SnowflakeIdWorker(30, 1);
-        for (int i = 0; i < 1000; i++) {
+        SnowflakeIdWorker idWorker = new SnowflakeIdWorker(30, 30);
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < 100; i++) {
             long id = idWorker.nextId();
             //System.out.println(Long.toBinaryString(id));
             System.out.println(id);
         }
+        long time = System.currentTimeMillis() - start;
+        System.out.println("耗时：" + time + "ms");
     }
 }
