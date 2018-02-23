@@ -15,6 +15,9 @@ import java.util.regex.Pattern;
  */
 public class OtherTest {
     private String name;
+    {
+        name = "asd";
+    }
 
     @Test
     public void foo1() {
