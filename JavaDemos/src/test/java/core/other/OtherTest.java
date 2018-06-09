@@ -106,4 +106,15 @@ public class OtherTest {
         time[1] = calendar.getTimeInMillis();
         return time;
     }
+
+    @Test
+    public void testBit(){
+        int code = 0;
+        System.out.println(Integer.toBinaryString(code));
+        for (int i = 0; i < 8; i++) {
+            code = code | 2^i;
+            System.out.println(Integer.toBinaryString(code));
+        }
+
+    }
 }
