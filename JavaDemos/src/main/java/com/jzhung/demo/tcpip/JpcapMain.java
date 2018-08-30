@@ -57,9 +57,9 @@ public class JpcapMain {
     */
 /**
      * 自定义包处理器
-     *//*
+     */
 
-    class Receiver implements PacketReceiver {
+    /*class Receiver implements PacketReceiver {
         public void receivePacket(Packet packet) {
             if (packet instanceof TCPPacket) {// 仅捕获TCP包
                 //EthernetPacket epack = (EthernetPacket) packet.datalink;
@@ -85,9 +85,8 @@ public class JpcapMain {
                 }
             }
         }
-    }
+    }*/
 
-    */
 /**
      * 对比数据头判断数据包类型
      *

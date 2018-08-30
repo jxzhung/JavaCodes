@@ -10,10 +10,10 @@ import java.io.RandomAccessFile;
 public class FileEncryptUtil {
 
     private static final int START = 1;
-    private static final int KEY = 20;
+    private static final int KEY = 2000000;
 
     public static void main(String[] args) {
-        encrypt("e:\\1.mp4");
+        encrypt("d:\\1.mp3");
     }
 
     /**
