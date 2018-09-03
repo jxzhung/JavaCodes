@@ -54,6 +54,14 @@
             <version>4.5.2</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>3.8.0</version>
+        </dependency>
+
+
         <!--Database-->
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
@@ -80,8 +88,9 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>20.0</version>
+            <version>23.6-jre</version>
         </dependency>
+
 
         <dependency>
             <groupId>com.squareup.retrofit2</groupId>
@@ -120,11 +129,11 @@
             <version>2.7.1</version>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>3.3.1</version>
-        </dependency>
+        </dependency>-->
 
 
         <dependency>
@@ -196,6 +205,24 @@
             <version>3.3.4</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/net.sourceforge.htmlunit/htmlunit -->
+        <dependency>
+            <groupId>net.sourceforge.htmlunit</groupId>
+            <artifactId>htmlunit</artifactId>
+            <version>2.27</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.9</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
+            <version>[7.0.0, 7.2.99]</version>
+        </dependency>
 
         <!-- hadoop dependency end -->
         <!-- https://mvnrepository.com/artifact/org.alfresco/alfresco-jlan-embed -->

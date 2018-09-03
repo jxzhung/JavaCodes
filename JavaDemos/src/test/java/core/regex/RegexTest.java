@@ -70,4 +70,17 @@ public class RegexTest {
                 .replaceAll("<span.+?>", "<span>"); //去除span标签内的属性
         return rawHtml;
     }
+
+    @Test
+    public void getQuePos(){
+        String str = "<img src='27-9054-0A1689509D12-5\\word\\media\\image18.png'  style='height:18.26pt;width:101pt;'/>,值；（2）求数列的通项公式；（3）求证:.18.<img src='/upload/courseResource\\1711AC1F-7E' />";
+        String regex = "<.*>.*?([0-9]{1,})\\..*";
+        Pattern ptn = Pattern.compile(regex);
+        Matcher matcher = ptn.matcher(str);
+        while (matcher.find()){
+            //System.out.println(matcher.group(0));
+            System.out.println(matcher.group(1));
+            System.out.println("位置：" + matcher.start(1) + " - " + matcher.end(1));
+        }
+    }
 }

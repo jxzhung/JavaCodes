@@ -1,6 +1,7 @@
 package com.jzhung.util;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.RandomAccessFile;
 
 /**
@@ -9,16 +10,52 @@ import java.io.RandomAccessFile;
 public class FileEncryptUtil {
 
     private static final int START = 1;
-    private static final int KEY = 50;
+    private static final int KEY = 2000000;
+
+    public static void main(String[] args) {
+        encrypt("d:\\1.mp3");
+    }
 
     /**
      * 加密
      */
-    public static void encrypt(String filePath){
+    public static void encrypt(String filePath) {
+        Logger.i("加密文件：" + filePath);
+        File file = new File(filePath);
+        File statusFile = new File(filePath + ".ex");
+        if (statusFile.exists()) {
+            Logger.i("文件已加密(跳过)：" + filePath);
+            return;
+        }
+        changeFile(file);
         try {
-            File file = new File(filePath);
-            if(file.length() >= START + KEY) {
-                RandomAccessFile raf = new RandomAccessFile(filePath, "rw");
+            statusFile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * 解密
+     */
+    public static void decrypt(String filePath) {
+        Logger.i("解密文件：" + filePath);
+        File file = new File(filePath);
+        File statusFile = new File(filePath + ".ex");
+        if (!statusFile.exists()) {
+            Logger.i("文件已解密(跳过)：" + filePath);
+            return;
+        }
+        changeFile(file);
+        statusFile.delete();
+    }
+
+    private static void changeFile(File file) {
+        if (file.length() >= START + KEY) {
+            RandomAccessFile raf = null;
+            try {
+                raf = new RandomAccessFile(file, "rw");
                 raf.seek(START);
                 byte[] bytes = new byte[KEY];
                 raf.read(bytes, 0, bytes.length);
@@ -27,16 +64,19 @@ public class FileEncryptUtil {
                 }
                 raf.seek(START);
                 raf.write(bytes);
+                raf.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (raf != null) {
+                    try {
+                        raf.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
-    /**
-     * 解密
-     */
-    public static void decrypt(String filePath){
-        encrypt(filePath);
+        }
     }
 }

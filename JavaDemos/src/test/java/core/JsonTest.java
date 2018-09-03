@@ -18,5 +18,6 @@ public class JsonTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println(System.currentTimeMillis());
     }
 }
